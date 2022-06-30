@@ -4,7 +4,7 @@ name: Docs to PDF
 on:
   push:
     branches:
-      - main
+      - add-generate-pdf
     # Paths can be used to only trigger actions when you have edited certain files, such as a file within the /docs directory
     paths:
       - 'docs/**.md'
