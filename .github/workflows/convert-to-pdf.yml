@@ -1,6 +1,5 @@
 
 name: Docs to PDF
-# This workflow is triggered on pushes to the repository.
 on:
   push:
     branches:
@@ -19,7 +18,12 @@ jobs:
           images_dir: docs/images
           image_import: ./images
           build_html: false
-      - uses: actions/upload-artifact@v1
+      - name: Upload to S3 artifact folder
+        uses: medlypharmacy/s3-artifacts-action@master
         with:
-          name: docs
-          path: pdfs
+          aws_access_key_id: ${{ secrets.S3_CV_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.S3_CV_SECRET_ACCESS_KEY }}
+          aws_s3_bucket_name: ${{ secrets.S3_CV_BUCKET_NAME }}
+          source_path: './pdfs/index.pdf'
+          destination_path: "/cv.pdf"
+          exclude_repo_from_destination_path: true
