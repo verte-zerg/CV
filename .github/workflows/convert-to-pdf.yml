@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - add-generate-pdf
+    paths:
+      - 'index.md'
 
 jobs:
   converttopdf:
