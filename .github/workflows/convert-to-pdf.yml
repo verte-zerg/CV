@@ -1,0 +1,27 @@
+
+name: Docs to PDF
+on:
+  push:
+    branches:
+      - gh-pages
+
+jobs:
+  converttopdf:
+    name: Build PDF
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: baileyjm02/markdown-to-pdf@v1
+        with:
+          input_path: index.md
+          output_dir: pdfs
+          build_html: false
+      - name: Upload to S3 artifact folder
+        uses: medlypharmacy/s3-artifacts-action@master
+        with:
+          aws_access_key_id: ${{ secrets.S3_CV_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.S3_CV_SECRET_ACCESS_KEY }}
+          aws_s3_bucket_name: ${{ secrets.S3_CV_BUCKET_NAME }}
+          source_path: './pdfs/index.pdf'
+          destination_path: "/cv.pdf"
+          exclude_repo_from_destination_path: true
